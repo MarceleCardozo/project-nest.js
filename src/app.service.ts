@@ -1,14 +1,14 @@
 /* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from './database/prisma.service';
-import { CreateUserBody } from './dtos/create-user-body';
+import { UserDTO } from './dtos/user.dto';
 import { randomUUID } from 'node:crypto';
 
 @Injectable()
 export class AppService {
   constructor(private prisma: PrismaService) {}
 
-  async create(createUserDto: CreateUserBody) {
+  async create(createUserDto: UserDTO) {
     const { name, role } = createUserDto;
 
     const user = await this.prisma.user.create({
@@ -34,6 +34,20 @@ export class AppService {
   async findOne(id: string) {
     const user = await this.prisma.user.findUnique({
       where: { id },
+    });
+
+    return user;
+  }
+
+  async update(id: string, updateUserDTO: UserDTO) {
+    const { name, role } = updateUserDTO;
+
+    const user = await this.prisma.user.update({
+      where: { id },
+      data: {
+        name,
+        role,
+      },
     });
 
     return user;
