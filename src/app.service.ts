@@ -52,4 +52,19 @@ export class AppService {
 
     return user;
   }
+
+  async remove(id: string) {
+    const user = await this.prisma.user.findUnique({
+      where: { id },
+    });
+
+    await this.prisma.user.delete({
+      where: { id },
+    });
+
+    return {
+      message: 'Usuário deletado com sucesso.',
+      data: user,
+    };
+  }
 }

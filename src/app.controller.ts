@@ -1,4 +1,12 @@
-import { Body, Controller, Post, Get, Param, Patch } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  Get,
+  Param,
+  Patch,
+  Delete,
+} from '@nestjs/common';
 import { AppService } from './app.service';
 import { PrismaService } from './database/prisma.service';
 import { UserDTO } from './dtos/user.dto';
@@ -28,5 +36,10 @@ export class AppController {
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UserDTO) {
     return this.appService.update(id, updateUserDto);
+  }
+
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.appService.remove(id);
   }
 }
