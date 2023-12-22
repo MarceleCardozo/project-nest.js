@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Get } from '@nestjs/common';
+import { Body, Controller, Post, Get, Param } from '@nestjs/common';
 import { AppService } from './app.service';
 import { PrismaService } from './database/prisma.service';
 import { CreateUserBody } from './dtos/create-user-body';
@@ -18,5 +18,10 @@ export class AppController {
   @Get()
   findAll() {
     return this.appService.findAll();
+  }
+
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.appService.findOne(id);
   }
 }
