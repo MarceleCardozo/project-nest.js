@@ -1,7 +1,6 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, Get } from '@nestjs/common';
 import { AppService } from './app.service';
 import { PrismaService } from './database/prisma.service';
-import { randomUUID } from 'node:crypto';
 import { CreateUserBody } from './dtos/create-user-body';
 
 @Controller('users')
@@ -12,19 +11,12 @@ export class AppController {
   ) {}
 
   @Post()
-  async create(@Body() body: CreateUserBody) {
-    const { name, role } = body;
+  create(@Body() createUserDto: CreateUserBody) {
+    return this.appService.create(createUserDto);
+  }
 
-    const newUser = await this.prisma.user.create({
-      data: {
-        id: randomUUID(),
-        name,
-        role,
-      },
-    });
-
-    return {
-      newUser,
-    };
+  @Get()
+  findAll() {
+    return this.appService.findAll();
   }
 }
